@@ -12,3 +12,5 @@ Flask-Mail==0.9.1
 Werkzeug==2.3.7
 requests==2.31.0
 mysql-connector-python==8.1.0
+statsmodels==0.14.0
+
