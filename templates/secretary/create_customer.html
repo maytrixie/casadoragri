@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Customer - Casador Agri</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #2E7D32;      /* 10% - Deep Forest Green */
+        --secondary: #A5D6A7;    /* 30% - Soft Green */
+        --light-bg: #FAFAFA;     /* 60% - Off-white background */
+        --white: #FFFFFF;        /* Pure white for containers */
+        --text-dark: #212529;    /* Text color */
+        --text-light: #6C757D;   /* Secondary text */
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        color: var(--text-dark);
+        background-color: var(--light-bg); /* 60% Off-white */
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Professional Background Elements */
+      .background-design {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      /* Subtle grid pattern */
+      .grid-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(46, 125, 50, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(46, 125, 50, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.4;
+      }
+
+      /* Geometric shapes */
+      .shape-1 {
+        position: absolute;
+        top: 10%;
+        right: 5%;
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, rgba(165, 214, 167, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%);
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        animation: float 8s ease-in-out infinite;
+      }
+
+      .shape-2 {
+        position: absolute;
+        bottom: 15%;
+        left: 5%;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(135deg, rgba(165, 214, 167, 0.08) 0%, rgba(46, 125, 50, 0.03) 100%);
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        animation: float 12s ease-in-out infinite reverse;
+      }
+
+      .shape-3 {
+        position: absolute;
+        top: 60%;
+        right: 15%;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, rgba(165, 214, 167, 0.06) 0%, rgba(46, 125, 50, 0.02) 100%);
+        border-radius: 50% 20% 70% 40% / 60% 70% 30% 40%;
+        animation: float 10s ease-in-out infinite;
+      }
+
+      /* Subtle lines */
+      .line-1 {
+        position: absolute;
+        top: 20%;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.1) 20%, rgba(46, 125, 50, 0.1) 80%, transparent 100%);
+      }
+
+      .line-2 {
+        position: absolute;
+        bottom: 30%;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.08) 30%, rgba(46, 125, 50, 0.08) 70%, transparent 100%);
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+
+      /* Navbar Styling - 30% Soft Green */
+      .navbar {
+        background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        padding: 1rem 2rem;
+        color: var(--text-dark);
+      }
+
+      .navbar-brand {
+        color: var(--text-dark) !important;
+        font-weight: 700;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        padding: 2rem 3rem;
+        background-color: var(--light-bg); /* 60% Off-white */
+      }
+
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Card Styling */
+      .form-card {
+        background-color: var(--white);
+        border-radius: 16px;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(255,255,255,0.8);
+      }
+
+      /* Button Styling */
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* 10% Deep Forest Green */
+        border: none;
+        padding: 0.85rem 2rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: all 0.4s ease;
+        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #1B5E20 0%, var(--primary) 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(46, 125, 50, 0.4);
+        color: white;
+      }
+
+      /* Green Outline Button for Back Button */
+      .btn-outline-success {
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        padding: 0.85rem 2rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: all 0.4s ease;
+        background: transparent;
+      }
+
+      .btn-outline-success:hover {
+        background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+      }
+
+      /* Light Green Button for Secondary Actions */
+      .btn-success-light {
+        background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%);
+        border: none;
+        color: var(--text-dark);
+        padding: 0.85rem 2rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: all 0.4s ease;
+        box-shadow: 0 4px 15px rgba(165, 214, 167, 0.3);
+      }
+
+      .btn-success-light:hover {
+        background: linear-gradient(135deg, #C8E6C9 0%, var(--secondary) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(165, 214, 167, 0.4);
+        color: var(--text-dark);
+      }
+
+      /* Form Styling */
+      .form-control, .form-select {
+        border: 1.5px solid #e9ecef;
+        padding: 0.85rem;
+        border-radius: 10px;
+        transition: all 0.3s;
+        background-color: var(--white);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      }
+
+      .form-control:focus, .form-select:focus {
+        border-color: var(--primary); /* 10% Deep Forest Green */
+        box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+        transform: translateY(-1px);
+      }
+
+      .form-label {
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      /* Footer - 30% Soft Green */
+      .footer {
+        background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+        color: var(--text-dark);
+        padding: 1.2rem 0;
+        text-align: center;
+        margin-top: auto;
+        position: relative;
+        z-index: 10;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      }
+
+      .footer p {
+        margin: 0;
+        opacity: 0.9;
+        letter-spacing: 0.3px;
+        font-weight: 600;
+      }
+
+      /* Profile Styling - Deep Forest Green */
+      .profile-dropdown {
+        color: var(--primary) !important; /* Deep Forest Green */
+        font-weight: 600;
+      }
+
+      .profile-dropdown:hover {
+        color: #1B5E20 !important; /* Darker shade for hover */
+      }
+
+      .profile-icon {
+        color: var(--primary) !important; /* Deep Forest Green */
+      }
+
+      /* Modal Styling */
+      .modal-header {
+        background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+        color: white;
+      }
+
+      /* Alert Styling */
+      .alert {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .main-content {
+          padding: 1rem;
+        }
+
+        .page-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+
+        .form-card {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+</head>
+<body>
+
+  <!-- Professional Background Design -->
+  <div class="background-design">
+    <div class="grid-pattern"></div>
+    <div class="shape-1"></div>
+    <div class="shape-2"></div>
+    <div class="shape-3"></div>
+    <div class="line-1"></div>
+    <div class="line-2"></div>
+  </div>
+
+  <!-- Navbar - 30% Soft Green -->
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand fw-bold" href="#">Casador Agri</a>
+    <div class="ms-auto dropdown">
+        <a href="#" class="profile-dropdown text-decoration-none dropdown-toggle d-flex align-items-center" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle fa-lg me-2 profile-icon"></i> Secretary
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
+            <li><a class="dropdown-item" href="{{ url_for('secretary_dashboard') }}"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content - 60% Off-white -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2 class="text-success mb-0">Add New Customer</h2>
+      <a href="{{ url_for('secretary_dashboard') }}" class="btn btn-outline-success">
+        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+      </a>
+    </div>
+
+    <!-- Customer Form Card -->
+    <div class="form-card">
+      <h4 class="text-success mb-4"><i class="fas fa-user-plus me-2"></i>Customer Information</h4>
+      
+      <form method="POST">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Customer Name</label>
+            <input type="text" name="customer_name" class="form-control" required>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Contact Number</label>
+            <input type="text" name="contact_number" class="form-control">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Address</label>
+            <textarea name="address" class="form-control" rows="4" required></textarea>
+          </div>
+
+          <div class="col-12">
+            <div class="d-flex gap-3 pt-3">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i> Save Customer
+              </button>
+              <a href="{{ url_for('secretary_dashboard') }}" class="btn btn-success-light">
+                <i class="fas fa-times me-2"></i> Cancel
+              </a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer - 30% Soft Green -->
+  <footer class="footer">
+    <p class="mb-0">&copy; {{ current_year }} Casador Agri Business Suite</p>
+  </footer>
+
+  <!-- Logout Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form method="POST" action="{{ url_for('logout') }}">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="logoutModalLabel"><i class="fas fa-sign-out-alt me-2"></i>Confirm Logout</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to log out of your secretary account?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Logout</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Auto-hide flash alerts after 1 second
+      setTimeout(function() {
+        document.querySelectorAll('.alert').forEach(function(alert) {
+          alert.classList.remove('show');
+          alert.classList.add('hide');
+        });
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>

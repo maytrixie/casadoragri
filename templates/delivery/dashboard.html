@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Dashboard - Casador Agri</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2E7D32;      /* 10% - Deep Forest Green */
+            --secondary: #A5D6A7;    /* 30% - Soft Green */
+            --light-bg: #FAFAFA;     /* 60% - Off-white background */
+            --white: #FFFFFF;        /* Pure white for containers */
+            --text-dark: #212529;    /* Text color */
+            --text-light: #6C757D;   /* Secondary text */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-dark);
+            background-color: var(--light-bg); /* 60% Off-white background */
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Professional Background Elements */
+        .background-design {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Subtle grid pattern */
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(46, 125, 50, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(46, 125, 50, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.4;
+        }
+
+        /* Geometric shapes */
+        .shape-1 {
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(165, 214, 167, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            position: absolute;
+            bottom: 15%;
+            left: 5%;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(165, 214, 167, 0.08) 0%, rgba(46, 125, 50, 0.03) 100%);
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: float 12s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            position: absolute;
+            top: 60%;
+            right: 15%;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(165, 214, 167, 0.06) 0%, rgba(46, 125, 50, 0.02) 100%);
+            border-radius: 50% 20% 70% 40% / 60% 70% 30% 40%;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        /* Subtle lines */
+        .line-1 {
+            position: absolute;
+            top: 20%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.1) 20%, rgba(46, 125, 50, 0.1) 80%, transparent 100%);
+        }
+
+        .line-2 {
+            position: absolute;
+            bottom: 30%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.08) 30%, rgba(46, 125, 50, 0.08) 70%, transparent 100%);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* Sidebar Styling - 30% Soft Green */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+            color: var(--text-dark);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 2rem 0;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            text-align: center;
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(46, 125, 50, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .logo-container {
+            background: linear-gradient(135deg, var(--white) 0%, var(--light-bg) 100%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .sidebar-logo h3 {
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin: 0;
+            color: var(--primary); /* 10% Deep Forest Green */
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(46, 125, 50, 0.1); /* 10% Deep Forest Green with opacity */
+            border-left-color: var(--primary); /* 10% Deep Forest Green */
+            padding-left: 2.5rem;
+            color: var(--primary);
+        }
+
+        .sidebar-menu i {
+            margin-right: 1rem;
+            width: 20px;
+            text-align: center;
+            color: var(--primary); /* 10% Deep Forest Green */
+        }
+
+        /* Main Content Area - 60% Off-white */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--light-bg); /* 60% Off-white */
+        }
+
+        /* Navbar Styling - 30% Soft Green */
+        .navbar {
+            background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            color: var(--text-dark);
+        }
+
+        .navbar-brand {
+            color: var(--text-dark) !important;
+            font-weight: 700;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: var(--text-dark);
+        }
+
+        /* Dashboard Content - 60% Off-white */
+        .dashboard-section {
+            flex: 1;
+            padding: 2rem 3rem;
+            background-color: var(--light-bg); /* 60% Off-white */
+            overflow-y: auto;
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h2 {
+            color: var(--primary); /* 10% Deep Forest Green */
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .welcome-text p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Consistent Card Styling - Pantay na laki at text */
+        .stats-card {
+            background: linear-gradient(135deg, var(--white) 0%, var(--light-bg) 100%);
+            border-radius: 16px;
+            padding: 2.5rem 1.5rem;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.8);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 200px;
+            width: 100%; /* Ensure full width */
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%); /* 10% + 30% */
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+        }
+
+        .stats-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stats-card h5 {
+            color: var(--primary); /* 10% Deep Forest Green */
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            font-size: 1.15rem;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
+            min-height: 2.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stats-card .number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--primary); /* 10% Deep Forest Green */
+            margin: 1rem 0;
+            line-height: 1;
+            min-height: 2.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stats-card .number i {
+            font-size: 2.8rem;
+            width: 60px; /* Fixed width for icons */
+            height: 60px; /* Fixed height for icons */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .stats-card .label {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+            min-height: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Table Styling - White container */
+        .table-container {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* Deep Forest Green */
+            color: white;
+            padding: 1.2rem 1.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .table-body {
+            padding: 1.5rem;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            background-color: var(--secondary);
+            color: var(--text-dark);
+            font-weight: 600;
+            border: none;
+            padding: 1rem;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        /* Map Styling - White container */
+        .map-container {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .map-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* Deep Forest Green */
+            color: white;
+            padding: 1.2rem 1.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .map-body {
+            padding: 1.5rem;
+        }
+
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+        }
+
+        /* Button Styling - 10% Deep Forest Green */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* 10% Deep Forest Green */
+            border: none;
+            padding: 0.85rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1B5E20 0%, var(--primary) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(46, 125, 50, 0.4);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* 10% Deep Forest Green */
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #1B5E20 0%, var(--primary) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
+            color: white;
+        }
+
+        .btn-outline-success {
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.4s ease;
+        }
+
+        .btn-outline-success:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+        }
+
+        /* Footer - 30% Soft Green */
+        .footer {
+            background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+            color: var(--text-dark);
+            padding: 1.2rem 0;
+            text-align: center;
+            margin-top: auto;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+
+        .footer p {
+            margin: 0;
+            opacity: 0.9;
+            letter-spacing: 0.3px;
+            font-weight: 600;
+        }
+
+        /* Profile Styling - Deep Forest Green */
+        .profile-dropdown {
+            color: var(--primary) !important; /* Deep Forest Green */
+            font-weight: 600;
+        }
+
+        .profile-dropdown:hover {
+            color: #1B5E20 !important; /* Darker shade for hover */
+        }
+
+        .profile-icon {
+            color: var(--primary) !important; /* Deep Forest Green */
+        }
+
+        /* Menu toggle button color */
+        .menu-toggle {
+            color: var(--text-dark) !important;
+        }
+
+        .menu-toggle:hover {
+            color: var(--primary) !important;
+        }
+
+        /* Flash Messages Styling */
+        #flash-container {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            z-index: 2000;
+        }
+
+        .alert {
+            margin: 0 auto;
+            max-width: 500px;
+            position: relative;
+            z-index: 2001;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .dashboard-section {
+                padding: 1.5rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .stats-card {
+                min-height: 180px;
+                padding: 2rem 1rem;
+            }
+
+            .stats-card .number {
+                font-size: 2.1rem;
+            }
+
+            .stats-card .number i {
+                font-size: 2.4rem;
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-section {
+                padding: 1rem;
+            }
+
+            .stats-card {
+                padding: 1.8rem 1rem;
+                min-height: 160px;
+            }
+
+            .stats-card h5 {
+                font-size: 1.1rem;
+                min-height: 2.4rem;
+            }
+
+            .stats-card .number {
+                font-size: 1.9rem;
+                min-height: 2.4rem;
+            }
+
+            .stats-card .number i {
+                font-size: 2.1rem;
+                width: 45px;
+                height: 45px;
+            }
+
+            .stats-card .label {
+                font-size: 0.8rem;
+                min-height: 2rem;
+            }
+
+            .map-body {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-card {
+                padding: 1.5rem 1rem;
+                min-height: 140px;
+            }
+
+            .stats-card h5 {
+                font-size: 1rem;
+                min-height: 2.2rem;
+            }
+
+            .stats-card .number {
+                font-size: 1.7rem;
+                min-height: 2.2rem;
+            }
+
+            .stats-card .number i {
+                font-size: 1.9rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            .stats-card .label {
+                font-size: 0.75rem;
+                min-height: 1.8rem;
+            }
+
+            #map {
+                height: 300px;
+            }
+        }
+
+        /* Menu Toggle Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Background Design -->
+    <div class="background-design">
+        <div class="grid-pattern"></div>
+        <div class="shape-1"></div>
+        <div class="shape-2"></div>
+        <div class="shape-3"></div>
+        <div class="line-1"></div>
+        <div class="line-2"></div>
+    </div>
+
+    <!-- Sidebar - 30% Soft Green -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/casadorr.png') }}" alt="Logo" style="width: 60px;">
+            </div>
+            <h3>Casador Agri</h3>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="{{ url_for('delivery_dashboard') }}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="{{ url_for('completed_deliveries') }}"><i class="fas fa-check-circle"></i> Completed Deliveries</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content - 60% Off-white -->
+    <div class="main-content">
+        <!-- Navbar - 30% Soft Green -->
+        <nav class="navbar navbar-expand-lg">
+            <button class="menu-toggle me-3">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand fw-bold" href="#">Delivery Dashboard</a>
+            <div class="ms-auto dropdown">
+                <a href="#" class="profile-dropdown text-decoration-none dropdown-toggle d-flex align-items-center" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-circle fa-lg me-2 profile-icon"></i> Delivery Staff
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editAccountModal"><i class="fas fa-edit me-2"></i>Edit Account</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Flash Messages (TOP POPUP) -->
+        <div id="flash-container">
+            <div class="container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show shadow" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
+        <!-- Dashboard Content - 60% Off-white -->
+        <div class="dashboard-section">
+            <div class="welcome-text">
+                <h2>Welcome, Delivery Staff!</h2>
+                <p>Manage your assigned deliveries and track your progress</p>
+            </div>
+
+            <!-- Stats Cards Row - Pantay na laki at width -->
+            <div class="row g-4 mb-5">
+                <!-- Assigned Deliveries Card -->
+                <div class="col-12 col-md-4 d-flex align-items-stretch">
+                    <div class="stats-card" data-url="#assigned-deliveries-table">
+                        <h5>Assigned Deliveries</h5>
+                        <div class="number">{{ assigned_deliveries|length }}</div>
+                        <div class="label">Total deliveries assigned to you</div>
+                    </div>
+                </div>
+                <!-- Completed Deliveries Card -->
+                <div class="col-12 col-md-4 d-flex align-items-stretch">
+                    <div class="stats-card" data-url="{{ url_for('completed_deliveries') }}">
+                        <h5>Completed Deliveries</h5>
+                        <div class="number">{{ completed_deliveries|length }}</div>
+                        <div class="label">Total deliveries you have completed</div>
+                    </div>
+                </div>
+                <!-- Total Distance Card -->
+                <div class="col-12 col-md-4 d-flex align-items-stretch">
+                    <div class="stats-card">
+                        <h5>Total Distance</h5>
+                        <div class="number" id="total-distance">...</div>
+                        <div class="label">Total kilometers from warehouse to all delivery points</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assigned Deliveries Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    Assigned Deliveries
+                </div>
+                <div class="table-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Address</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for delivery in assigned_deliveries %}
+                            <tr>
+                                <td>{{ delivery.customer_name }}</td>
+                                <td>{{ delivery.address }}</td>
+                                <td>{{ delivery.status }}</td>
+                                <td>
+                                    {% if delivery.status != 'completed' %}
+                                    <!-- Button to trigger modal -->
+                                    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#completeModal{{ delivery.order_id }}">
+                                        Mark as Completed
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <!-- Modal -->
+<div class="modal fade" id="completeModal{{ delivery.order_id }}" tabindex="-1" aria-labelledby="completeModalLabel{{ delivery.order_id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('mark_completed', order_id=delivery.order_id) }}" enctype="multipart/form-data">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="completeModalLabel{{ delivery.order_id }}">Complete Delivery</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 📸 FILE UPLOAD INPUT -->
+                    <div class="mb-3">
+                        <label for="proof_photo{{ delivery.order_id }}" class="form-label">
+                            <i class="fas fa-camera me-2"></i>Upload Proof of Delivery
+                        </label>
+                        <input class="form-control" 
+                               type="file" 
+                               id="proof_photo{{ delivery.order_id }}" 
+                               name="proof_photo" 
+                               accept="image/*" 
+                               required>
+                        <div class="form-text">Upload a photo (JPG, PNG, JPEG)</div>
+                    </div>
+                    
+                    <!-- ✅ CONFIRMATION CHECKBOX -->
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               id="confirm{{ delivery.order_id }}" 
+                               name="confirm" 
+                               value="yes"
+                               required>
+                        <label class="form-check-label" for="confirm{{ delivery.order_id }}">
+                            I confirm that all items have been delivered to the customer.
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check me-2"></i>Confirm Delivery
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+                                    {% else %}
+                                    <span class="text-success fw-bold">Completed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Delivery Map -->
+            <div class="map-container">
+                <div class="map-header">
+                    <span>Delivery Map</span>
+                    <button id="optimize-route-btn" class="btn btn-outline-success btn-sm">Optimize Route</button>
+                </div>
+                <div class="map-body">
+                    <div id="map"></div>
+                    <div id="route-summary" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer - 30% Soft Green -->
+        <footer class="footer">
+            <p class="mb-0">&copy; {{ current_year }} Casador Agri Business Suite</p>
+        </footer>
+    </div>
+
+    <!-- Edit Account Modal -->
+    <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="{{ url_for('update_account') }}">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="editAccountModalLabel">Edit Account</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">New Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required value="{{ session['email'] }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="POST" action="{{ url_for('logout') }}">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="logoutModalLabel"><i class="fas fa-sign-out-alt me-2"></i>Confirm Logout</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to log out of your account?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps JS API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
+    <script id="assigned-deliveries-data" type="application/json">
+    {{ assigned_deliveries | tojson | safe }}
+    </script>
+    <script>
+        function haversine(lat1, lon1, lat2, lon2) {
+            function toRad(x) { return x * Math.PI / 180; }
+            var R = 6371; // km
+            var dLat = toRad(lat2 - lat1);
+            var dLon = toRad(lon2 - lon1);
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        function initMap() {
+            var center = { lat: 13.41, lng: 122.56 };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6,
+                center: center
+            });
+            var geocoder = new google.maps.Geocoder();
+            var raw = document.getElementById('assigned-deliveries-data').textContent || '[]';
+            var deliveries = [];
+            try { deliveries = JSON.parse(raw); } catch (e) { deliveries = []; }
+
+            // Warehouse address
+            var warehouseAddress = "W832+M5 San Antonio, Quezon";
+            geocoder.geocode({ address: warehouseAddress }, function(warehouseResults, warehouseStatus) {
+                if (warehouseStatus === 'OK' && warehouseResults[0]) {
+                    var warehouseLoc = warehouseResults[0].geometry.location;
+                    map.setCenter(warehouseLoc);
+                    map.setZoom(13);
+
+                    // Place warehouse marker (pink)
+                    new google.maps.Marker({
+                        map: map,
+                        position: warehouseLoc,
+                        title: "Warehouse",
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/pink-dot.png'
+                    });
+
+                    // Variables for delivery points
+                    var locs = [];
+                    var completed = 0;
+                    var deliveryMarkers = [];
+                    var completedIndex = -1; // Track last completed delivery
+
+                    deliveries.forEach(function(delivery, idx) {
+                        if (delivery.address) {
+                            geocoder.geocode({ address: delivery.address }, function(results, status) {
+                                completed++;
+                                if (status === 'OK' && results[0]) {
+                                    var loc = results[0].geometry.location;
+                                    locs[idx] = loc;
+                                    
+                                    // Place delivery markers with color coding
+                                    var marker = new google.maps.Marker({
+                                        map: map,
+                                        position: loc,
+                                        title: delivery.customer_name,
+                                        icon: (delivery.status === 'delivered')
+                                            ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                                            : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                    });
+                                    deliveryMarkers[idx] = marker;
+                                    
+                                    // Find last completed delivery
+                                    if (delivery.status === 'delivered') {
+                                        completedIndex = idx;
+                                    }
+                                }
+                                
+                            // After all geocoding done, calculate distance
+                            if (completed === deliveries.length) {
+                                calculateDistance(warehouseLoc, locs, completedIndex);
+                                
+                                // Store data for optimize button and show initial route
+                                window.mapData = {
+                                    map: map,
+                                    warehouseLoc: warehouseLoc,
+                                    locs: locs,
+                                    completedIndex: completedIndex
+                                };
+                                
+                                // Show initial route without optimization
+                                showRouteAndTimes(map, warehouseLoc, locs, completedIndex, false);
+                            }
+                                                        });
+                        } else {
+                            completed++;
+                        }
+                    });
+                } else {
+                    alert("Warehouse address not found: " + warehouseStatus);
+                }
+            });
+        }
+
+        function calculateDistance(warehouseLoc, locs, completedIndex) {
+            let totalDistance = 0;
+            let startPoint = completedIndex >= 0 ? locs[completedIndex] : warehouseLoc;
+
+            for (let i = completedIndex + 1; i < locs.length; i++) {
+                if (locs[i]) {
+                    let prevPoint = i === completedIndex + 1 ? startPoint : locs[i - 1];
+                    if (prevPoint) {
+                        totalDistance += haversine(
+                            prevPoint.lat(), prevPoint.lng(),
+                            locs[i].lat(), locs[i].lng()
+                        );
+                    }
+                }
+            }
+
+            // Update the total distance display
+            document.getElementById('total-distance').textContent = totalDistance.toFixed(2) + " km";
+        }
+
+        let lastShowRouteArgs = null;
+        let directionsRenderer = null;
+        let routeMarkers = [];
+        let isRouteVisible = false; // Track route visibility
+
+        function showRouteAndTimes(map, warehouseLoc, deliveryLocs, completedIdx, optimize = false) {
+            lastShowRouteArgs = [map, warehouseLoc, deliveryLocs, completedIdx];
+
+            // Clear previous directions
+            if (directionsRenderer) {
+                directionsRenderer.setMap(null);
+            }
+            
+            // Create new renderer with blue route color
+            directionsRenderer = new google.maps.DirectionsRenderer({ 
+                map: map, 
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: '#4285F4', // Google Maps blue
+                    strokeWeight: 5,
+                    strokeOpacity: 0.8
+                }
+            });
+
+            routeMarkers.forEach(marker => marker.setMap(null));
+            routeMarkers = [];
+
+            const directionsService = new google.maps.DirectionsService();
+            const waypoints = [];
+
+            // Collect all pending delivery locations
+            for (let i = completedIdx + 1; i < deliveryLocs.length; i++) {
+                if (deliveryLocs[i]) {
+                    waypoints.push({ location: deliveryLocs[i], stopover: true });
+                }
+            }
+
+            if (waypoints.length === 0) {
+                document.getElementById('route-summary').innerHTML = '<div class="alert alert-info">No pending deliveries to route.</div>';
+                return;
+            }
+
+            const origin = completedIdx >= 0 ? deliveryLocs[completedIdx] : warehouseLoc;
+            const destination = waypoints[waypoints.length - 1].location;
+
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: destination,
+                    waypoints: waypoints.slice(0, -1),
+                    optimizeWaypoints: optimize,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                function (response, status) {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(response);
+                        isRouteVisible = true;
+
+                        const route = response.routes[0];
+                        let totalDistance = 0;
+                        let totalDuration = 0;
+
+                        // Calculate total distance and time
+                        route.legs.forEach(leg => {
+                            totalDistance += leg.distance.value;
+                            totalDuration += leg.duration.value;
+                        });
+
+                        // Convert to readable format
+                        const distanceKm = (totalDistance / 1000).toFixed(2);
+                        const durationMins = Math.round(totalDuration / 60);
+
+                        // Display route summary
+                        let summaryHtml = `
+                            <div class="alert alert-success">
+                                <h5><i class="fas fa-route me-2"></i>Route ${optimize ? 'Optimized' : 'Displayed'}</h5>
+                                <p class="mb-1"><strong>Total Distance:</strong> ${distanceKm} km</p>
+                                <p class="mb-0"><strong>Estimated Time:</strong> ${durationMins} minutes</p>
+                                ${optimize ? '<p class="mb-0 text-muted"><small>Route ordered by nearest delivery point</small></p>' : ''}
+                            </div>
+                        `;
+                        
+                        document.getElementById('route-summary').innerHTML = summaryHtml;
+                    } else {
+                        document.getElementById('route-summary').innerHTML = 
+                            '<div class="alert alert-danger">Could not calculate route. Status: ' + status + '</div>';
+                    }
+                }
+            );
+        }
+
+        // Add event listener for the optimize button
+        window.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('optimize-route-btn');
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    if (lastShowRouteArgs) {
+                        // Show optimized route with blue line
+                        showRouteAndTimes(...lastShowRouteArgs, true);
+                        
+                        // Update button appearance
+                        btn.innerHTML = '<i class="fas fa-check me-2"></i>Route Optimized';
+                        btn.classList.remove('btn-outline-success');
+                        btn.classList.add('btn-success');
+                    }
+                });
+            }
+        });
+        window.addEventListener('load', function () {
+    initMap(); // Initialize the map and calculate the route
+});
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-hide flash alerts after 1 second
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.querySelectorAll('.alert').forEach(function(alert) {
+                    alert.classList.remove('show');
+                    alert.classList.add('hide');
+                });
+            }, 1000);
+
+            // Mobile menu toggle
+            var menuToggle = document.querySelector('.menu-toggle');
+            var sidebar = document.querySelector('.sidebar');
+
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                });
+            }
+
+            // Stats card click handlers
+            document.querySelectorAll('.stats-card').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    var url = this.getAttribute('data-url');
+                    if (url) {
+                        if (url.startsWith('#')) {
+                            // Scroll to section
+                            document.querySelector(url).scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            // Navigate to page
+                            window.location.href = url;
+                        }
+                    }
+                });
+            });
+        });
+
+        function markAsCompleted(orderId) {
+            fetch(`/delivery/mark_completed/${orderId}`, {
+                method: 'POST',
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Find the marker for the completed delivery
+                    const deliveryIndex = window.mapData.deliveries.findIndex(delivery => delivery.order_id === orderId);
+                    if (deliveryIndex !== -1) {
+                        const marker = window.mapData.deliveryMarkers[deliveryIndex];
+                        if (marker) {
+                            // Change the marker color to green
+                            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                        }
+                    }
+                    alert('Order marked as completed!');
+                } else {
+                    alert('Failed to mark order as completed.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Casador Agri</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    :root {
+      --primary: #2E7D32;      /* 10% - Deep Forest Green */
+      --secondary: #A5D6A7;    /* 30% - Soft Green */
+      --light-bg: #FAFAFA;     /* 60% - Off-white background */
+      --white: #FFFFFF;        /* Pure white for containers */
+      --text-dark: #212529;    /* Text color */
+      --text-light: #6C757D;   /* Secondary text */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--text-dark);
+      background-color: var(--light-bg); /* 60% Off-white background */
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Professional Background Elements */
+    .background-design {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    /* Subtle grid pattern */
+    .grid-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+          linear-gradient(rgba(46, 125, 50, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(46, 125, 50, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.4;
+    }
+
+    /* Geometric shapes */
+    .shape-1 {
+      position: absolute;
+      top: 10%;
+      right: 5%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .shape-2 {
+      position: absolute;
+      bottom: 15%;
+      left: 5%;
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.08) 0%, rgba(46, 125, 50, 0.03) 100%);
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      animation: float 12s ease-in-out infinite reverse;
+    }
+
+    .shape-3 {
+      position: absolute;
+      top: 60%;
+      right: 15%;
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.06) 0%, rgba(46, 125, 50, 0.02) 100%);
+      border-radius: 50% 20% 70% 40% / 60% 70% 30% 40%;
+      animation: float 10s ease-in-out infinite;
+    }
+
+    /* Subtle lines */
+    .line-1 {
+      position: absolute;
+      top: 20%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.1) 20%, rgba(46, 125, 50, 0.1) 80%, transparent 100%);
+    }
+
+    .line-2 {
+      position: absolute;
+      bottom: 30%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.08) 30%, rgba(46, 125, 50, 0.08) 70%, transparent 100%);
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+    }
+
+    /* Sidebar Styling - 30% Soft Green */
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+      color: var(--text-dark);
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding: 2rem 0;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      text-align: center;
+      padding: 0 2rem 2rem;
+      border-bottom: 1px solid rgba(46, 125, 50, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .logo-container {
+      background: linear-gradient(135deg, var(--white) 0%, var(--light-bg) 100%);
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 1rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .sidebar-logo h3 {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin: 0;
+      color: var(--primary); /* 10% Deep Forest Green */
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 1rem 2rem;
+      color: var(--text-dark);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar-menu a:hover,
+    .sidebar-menu a.active {
+      background: rgba(46, 125, 50, 0.1); /* 10% Deep Forest Green with opacity */
+      border-left-color: var(--primary); /* 10% Deep Forest Green */
+      padding-left: 2.5rem;
+      color: var(--primary);
+    }
+
+    .sidebar-menu i {
+      margin-right: 1rem;
+      width: 20px;
+      text-align: center;
+      color: var(--primary); /* 10% Deep Forest Green */
+    }
+
+    /* Main Content Area - 60% Off-white */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--light-bg); /* 60% Off-white */
+    }
+
+    /* Navbar Styling - 30% Soft Green */
+    .navbar {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;
+      color: var(--text-dark);
+    }
+
+    .navbar-brand {
+      color: var(--text-dark) !important;
+      font-weight: 700;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      color: var(--text-dark);
+    }
+
+    /* Dashboard Content - 60% Off-white */
+    .dashboard-section {
+      flex: 1;
+      padding: 2rem 3rem;
+      background-color: var(--light-bg); /* 60% Off-white */
+      overflow-y: auto;
+    }
+
+    .welcome-text {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .welcome-text h2 {
+      color: var(--primary); /* 10% Deep Forest Green */
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+
+    .welcome-text p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+
+    /* Consistent Card Styling - Pantay na laki at text */
+    .stats-card {
+      background: linear-gradient(135deg, var(--white) 0%, var(--light-bg) 100%);
+      border-radius: 16px;
+      padding: 2.5rem 1.5rem;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      text-align: center;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(255,255,255,0.8);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 200px;
+      width: 100%; /* Ensure full width */
+    }
+
+    .stats-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%); /* 10% + 30% */
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .stats-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+    }
+
+    .stats-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .stats-card h5 {
+      color: var(--primary); /* 10% Deep Forest Green */
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      font-size: 1.15rem;
+      letter-spacing: 0.3px;
+      line-height: 1.3;
+      min-height: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stats-card .number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--primary); /* 10% Deep Forest Green */
+      margin: 1rem 0;
+      line-height: 1;
+      min-height: 2.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stats-card .number i {
+      font-size: 2.8rem;
+      width: 60px; /* Fixed width for icons */
+      height: 60px; /* Fixed height for icons */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .stats-card .label {
+      color: var(--text-light);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+      min-height: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Filter Styling - White container */
+    .filter-container {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .form-control {
+      border: 1.5px solid #e9ecef;
+      padding: 0.85rem;
+      border-radius: 10px;
+      transition: all 0.3s;
+      background-color: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .form-control:focus {
+      border-color: var(--primary); /* 10% Deep Forest Green */
+      box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+      transform: translateY(-1px);
+    }
+
+    /* Chart Styling - White containers */
+    .chart-card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.8);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      width: 100%; /* Ensure full width */
+      max-width: 1200px; /* Optional: Set a maximum width */
+      margin: 0 auto; /* Center the chart */
+    }
+
+    .chart-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* Deep Forest Green */
+      color: white;
+      padding: 1.2rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+
+    .chart-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 500px; /* Adjusted minimum height */
+    }
+
+    .chart-container {
+      flex: 1;
+      width: 100%; /* Ensure the chart container spans the full width */
+      min-height: 500px; /* Increase height for better visibility */
+      position: relative;
+      padding-bottom: 50px; /* Add padding to prevent labels from being cut off */
+    }
+
+    .chart-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Footer - 30% Soft Green */
+    .footer {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+      color: var(--text-dark);
+      padding: 1.2rem 0;
+      text-align: center;
+      margin-top: auto;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    }
+
+    .footer p {
+      margin: 0;
+      opacity: 0.9;
+      letter-spacing: 0.3px;
+      font-weight: 600;
+    }
+
+    /* Button Styling - 10% Deep Forest Green */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* 10% Deep Forest Green */
+      border: none;
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.4s ease;
+      box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1B5E20 0%, var(--primary) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(46, 125, 50, 0.4);
+      color: white;
+    }
+
+    .dropdown-menu {
+      border-radius: 12px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+      border: none;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--secondary); /* 30% Soft Green */
+    }
+
+    /* Profile Styling - Deep Forest Green */
+    .profile-dropdown {
+      color: var(--primary) !important; /* Deep Forest Green */
+      font-weight: 600;
+    }
+
+    .profile-dropdown:hover {
+      color: #1B5E20 !important; /* Darker shade for hover */
+    }
+
+    .profile-icon {
+      color: var(--primary) !important; /* Deep Forest Green */
+    }
+
+    /* Menu toggle button color */
+    .menu-toggle {
+      color: var(--text-dark) !important;
+    }
+
+    .menu-toggle:hover {
+      color: var(--primary) !important;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .dashboard-section {
+        padding: 1.5rem;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .stats-card {
+        min-height: 180px;
+        padding: 2rem 1rem;
+      }
+
+      .stats-card .number {
+        font-size: 2.1rem;
+      }
+
+      .stats-card .number i {
+        font-size: 2.4rem;
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-section {
+        padding: 1rem;
+      }
+
+      .stats-card {
+        padding: 1.8rem 1rem;
+        min-height: 160px;
+      }
+
+      .stats-card h5 {
+        font-size: 1.1rem;
+        min-height: 2.4rem;
+      }
+
+      .stats-card .number {
+        font-size: 1.9rem;
+        min-height: 2.4rem;
+      }
+
+      .stats-card .number i {
+        font-size: 2.1rem;
+        width: 45px;
+        height: 45px;
+      }
+
+      .stats-card .label {
+        font-size: 0.8rem;
+        min-height: 2rem;
+      }
+
+      .chart-body {
+        min-height: 250px;
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .stats-card {
+        padding: 1.5rem 1rem;
+        min-height: 140px;
+      }
+
+      .stats-card h5 {
+        font-size: 1rem;
+        min-height: 2.2rem;
+      }
+
+      .stats-card .number {
+        font-size: 1.7rem;
+        min-height: 2.2rem;
+      }
+
+      .stats-card .number i {
+        font-size: 1.9rem;
+        width: 40px;
+        height: 40px;
+      }
+
+      .stats-card .label {
+        font-size: 0.75rem;
+        min-height: 1.8rem;
+      }
+
+      .chart-body {
+        min-height: 200px;
+      }
+    }
+
+    /* Menu Toggle Button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 992px) {
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    .trend-up {
+      color: #2E7D32;
+    }
+
+    .trend-down {
+      color: #C62828;
+    }
+
+    /* Additional Styles for Metrics Cards */
+    .metrics-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 1rem;
+    }
+
+    .metrics-card h4 {
+        color: #2E7D32;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .metric-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .metric-item:last-child {
+        border-bottom: none;
+    }
+
+    .metric-item span:first-child {
+        color: #666;
+    }
+
+    .metric-item span:last-child {
+        font-weight: 500;
+        color: #2E7D32;
+    }
+  </style>
+</head>
+<body>
+  <!-- Professional Background Design -->
+  <div class="background-design">
+    <div class="grid-pattern"></div>
+    <div class="shape-1"></div>
+    <div class="shape-2"></div>
+    <div class="shape-3"></div>
+    <div class="line-1"></div>
+    <div class="line-2"></div>
+  </div>
+
+  <!-- Sidebar - 30% Soft Green -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-container">
+        <img src="{{ url_for('static', filename='img/casadorr.png') }}" alt="Logo" style="width: 60px;">
+      </div>
+      <h3>Casador Agri</h3>
+    </div>
+    
+    <ul class="sidebar-menu">
+      <li><a href="{{ url_for('admin_dashboard') }}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="{{ url_for('admin_today_sales') }}"><i class="fas fa-chart-line"></i> Manage Sales</a></li>
+      <li><a href="{{ url_for('admin_inventory') }}"><i class="fas fa-boxes"></i> Manage Inventory</a></li>
+      <li><a href="{{ url_for('view_users') }}"><i class="fas fa-users"></i> Manage Pending Users</a></li>
+      <li><a href="{{ url_for('view_logs') }}"><i class="fas fa-clipboard-list"></i> Manage Activity Logs</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content - 60% Off-white -->
+  <div class="main-content">
+    <!-- Navbar - 30% Soft Green -->
+    <nav class="navbar navbar-expand-lg">
+      <button class="menu-toggle me-3">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a class="navbar-brand fw-bold" href="#">Admin Dashboard</a>
+      <div class="ms-auto dropdown">
+        <a href="#" class="profile-dropdown text-decoration-none dropdown-toggle d-flex align-items-center" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user-circle fa-lg me-2 profile-icon"></i> Admin
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
+          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editAccountModal"><i class="fas fa-edit me-2"></i>Edit Account</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+              <i class="fas fa-sign-out-alt me-2"></i>Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Dashboard Content - 60% Off-white -->
+    <div class="dashboard-section">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show mb-4" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="welcome-text">
+        <h2>Welcome, Admin!</h2>
+        <p>Monitor and manage your agricultural business operations</p>
+      </div>
+
+      <!-- Filter Row -->
+      <div class="filter-container">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <form method="GET" id="salesFilterForm" class="d-flex align-items-center gap-2">
+              <select class="form-select" id="period" name="period" aria-label="Sales period filter">
+                <option value="" {% if not request.args.get('period') %}selected{% endif %}>-- Select period --</option>
+                <option value="today" {% if request.args.get('period') == 'today' %}selected{% endif %}>Today</option>
+                <option value="yesterday" {% if request.args.get('period') == 'yesterday' %}selected{% endif %}>Yesterday</option>
+                <option value="this_month" {% if request.args.get('period') == 'this_month' %}selected{% endif %}>This Month</option>
+                <option value="last_week" {% if request.args.get('period') == 'last_week' %}selected{% endif %}>Last Week</option>
+                <option value="last_month" {% if request.args.get('period') == 'last_month' %}selected{% endif %}>Last Month</option>
+                <option value="5_years_ago" {% if request.args.get('period') == '5_years_ago' %}selected{% endif %}>5 Years Ago</option>
+              </select>
+              <button type="submit" class="btn btn-primary" id="applyFilterBtn">Apply</button>
+              <div id="filterSpinner" class="spinner-border text-success ms-2" role="status" style="display:none;width:1.5rem;height:1.5rem;">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards Row - Pantay na laki at width -->
+      <div class="row g-4 mb-5">
+        <!-- Total Sales Card --> 
+        <div class="col-12 col-md-6 col-lg-3 d-flex align-items-stretch">
+          <div class="stats-card" data-url="{{ url_for('admin_today_sales') }}">
+            <h5>Total Sales</h5>
+            <div class="number">₱{{ total_sales }}</div>
+            <div class="label">Today's Revenue</div>
+          </div>
+        </div>
+        <!-- Inventory Card -->
+        <div class="col-12 col-md-6 col-lg-3 d-flex align-items-stretch">
+          <div class="stats-card" data-url="{{ url_for('admin_inventory') }}">
+            <h5>Total Inventory</h5>
+            <div class="number"><i class="fas fa-boxes"></i></div>
+            <div class="label">Stock Management</div>
+          </div>
+        </div>
+        <!-- Pending Users Card -->
+        <div class="col-12 col-md-6 col-lg-3 d-flex align-items-stretch">
+          <div class="stats-card" data-url="{{ url_for('view_users') }}">
+            <h5>Total Pending Users</h5>
+            <div class="number">{{ pending_users }}</div>
+            <div class="label">Awaiting Approval</div>
+          </div>
+        </div>
+        <!-- Activity Logs Card -->
+        <div class="col-12 col-md-6 col-lg-3 d-flex align-items-stretch">
+          <div class="stats-card" data-url="{{ url_for('view_logs') }}">
+            <h5>Activity Logs</h5>
+            <div class="number"><i class="fas fa-clipboard-list"></i></div>
+            <div class="label">User Activities</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="row g-4">
+        <!-- Monthly Sales Chart -->
+        <div class="col-12">
+          <div class="chart-card">
+            <div class="chart-header">
+              Monthly Actual Sales (Interactive)
+            </div>
+            <div class="chart-body">
+              <div class="chart-container">
+                {% if chart_html %}
+                  {{ chart_html|safe }}
+                {% else %}
+                  <div class="chart-placeholder">
+                    No data available for this period.
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Predicted Best Selling Products Chart -->
+        <div class="col-12">
+          <div class="chart-card">
+            <div class="chart-header">
+              Predicted Best Selling Products (Next Month)
+            </div>
+            <div class="chart-body">
+              <div class="chart-container">
+                {% if best_selling_forecast_html %}
+                  {{ best_selling_forecast_html|safe }}
+                {% else %}
+                  <div class="chart-placeholder">
+                    No data available for this period.
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <!-- Footer - 30% Soft Green -->
+    <footer class="footer">
+      <p class="mb-0">&copy; {{ current_year }} Casador Agri Business Suite</p>
+    </footer>
+  </div>
+
+  <!-- Edit Account Modal -->
+  <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" action="{{ url_for('update_account') }}">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="editAccountModalLabel">Edit Admin Account</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="email" class="form-label">New Email</label>
+              <input type="email" class="form-control" id="email" name="email" required value="{{ session['email'] }}">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">New Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form method="POST" action="{{ url_for('logout') }}">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="logoutModalLabel"><i class="fas fa-sign-out-alt me-2"></i>Confirm Logout</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to log out of your admin account?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Logout</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Auto-hide flash alerts after 1 second
+      setTimeout(function() {
+        document.querySelectorAll('.alert').forEach(function(alert) {
+          alert.classList.remove('show');
+          alert.classList.add('hide');
+        });
+      }, 1000);
+
+      // Submit-only-on-Apply behavior: enable Apply when selection made, show spinner on submit
+      var periodSelect = document.getElementById('period');
+      var form = document.getElementById('salesFilterForm');
+      var spinner = document.getElementById('filterSpinner');
+      var applyBtn = document.getElementById('applyFilterBtn');
+
+      if (applyBtn && periodSelect && form) {
+        // Initialize button state
+        applyBtn.disabled = !periodSelect.value;
+
+        periodSelect.addEventListener('change', function() {
+          applyBtn.disabled = !periodSelect.value;
+        });
+
+        form.addEventListener('submit', function(e) {
+          // If nothing selected, prevent submit
+          if (!periodSelect.value) {
+            e.preventDefault();
+            return;
+          }
+          applyBtn.disabled = true;
+          spinner.style.display = 'inline-block';
+        });
+      }
+
+      // Mobile menu toggle
+      var menuToggle = document.querySelector('.menu-toggle');
+      var sidebar = document.querySelector('.sidebar');
+
+      if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', function() {
+          sidebar.classList.toggle('active');
+        });
+      }
+
+      // Stats card click handlers
+      document.querySelectorAll('.stats-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          var url = this.getAttribute('data-url');
+          if (url) {
+            window.location.href = url;
+          }
+        });
+      });
+
+      // Resize charts to maintain consistent size
+      function resizeCharts() {
+        var chartContainers = document.querySelectorAll('.chart-container');
+        var minHeight = 0;
+
+        // Find the tallest chart container
+        chartContainers.forEach(function(container) {
+          var height = container.offsetHeight;
+          if (height > minHeight) {
+            minHeight = height;
+          }
+        });
+
+        // Set all chart containers to the same height
+        chartContainers.forEach(function(container) {
+          container.style.minHeight = minHeight + 'px';
+        });
+      }
+
+      // Initial resize
+      setTimeout(resizeCharts, 100);
+
+      // Resize on window resize
+      window.addEventListener('resize', resizeCharts);
+    });
+  </script>
+</body>
+</html>

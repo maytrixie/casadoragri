@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Order - Secretary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    :root {
+      --primary: #2E7D32;
+      --secondary: #A5D6A7;
+      --light-bg: #FAFAFA;
+      --white: #FFFFFF;
+      --text-dark: #212529;
+      --text-light: #6C757D;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--text-dark);
+      background-color: var(--light-bg);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .background-design {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .grid-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+          linear-gradient(rgba(46, 125, 50, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(46, 125, 50, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.4;
+    }
+
+    .shape-1 {
+      position: absolute;
+      top: 10%;
+      right: 5%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .shape-2 {
+      position: absolute;
+      bottom: 15%;
+      left: 5%;
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.08) 0%, rgba(46, 125, 50, 0.03) 100%);
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      animation: float 12s ease-in-out infinite reverse;
+    }
+
+    .shape-3 {
+      position: absolute;
+      top: 60%;
+      right: 15%;
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.06) 0%, rgba(46, 125, 50, 0.02) 100%);
+      border-radius: 50% 20% 70% 40% / 60% 70% 30% 40%;
+      animation: float 10s ease-in-out infinite;
+    }
+
+    .line-1 {
+      position: absolute;
+      top: 20%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.1) 20%, rgba(46, 125, 50, 0.1) 80%, transparent 100%);
+    }
+
+    .line-2 {
+      position: absolute;
+      bottom: 30%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.08) 30%, rgba(46, 125, 50, 0.08) 70%, transparent 100%);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;
+      color: var(--text-dark);
+    }
+
+    .navbar-brand {
+      color: var(--text-dark) !important;
+      font-weight: 700;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 2rem 3rem;
+      background-color: var(--light-bg);
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .table-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .table-card-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      padding: 1.2rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      border: none;
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.4s ease;
+      box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1B5E20 0%, var(--primary) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(46, 125, 50, 0.4);
+      color: white;
+    }
+
+    .btn-outline-success {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.4s ease;
+      background: transparent;
+    }
+
+    .btn-outline-success:hover {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+    }
+
+    .btn-success-light {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%);
+      border: none;
+      color: var(--text-dark);
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.4s ease;
+      box-shadow: 0 4px 15px rgba(165, 214, 167, 0.3);
+    }
+
+    .btn-success-light:hover {
+      background: linear-gradient(135deg, #C8E6C9 0%, var(--secondary) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(165, 214, 167, 0.4);
+      color: var(--text-dark);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    .form-control, .form-select {
+      border: 1.5px solid #e9ecef;
+      padding: 0.85rem;
+      border-radius: 10px;
+      transition: all 0.3s;
+      background-color: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .form-label {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .table th {
+      background-color: var(--primary);
+      color: white;
+      font-weight: 600;
+      padding: 1rem;
+    }
+
+    .table td {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(165, 214, 167, 0.1);
+    }
+
+    .total-price-card {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .footer {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%);
+      color: var(--text-dark);
+      padding: 1.2rem 0;
+      text-align: center;
+      margin-top: auto;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    }
+
+    .footer p {
+      margin: 0;
+      opacity: 0.9;
+      letter-spacing: 0.3px;
+      font-weight: 600;
+    }
+
+    .profile-dropdown {
+      color: var(--primary) !important;
+      font-weight: 600;
+    }
+
+    .profile-dropdown:hover {
+      color: #1B5E20 !important;
+    }
+
+    .profile-icon {
+      color: var(--primary) !important;
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+    }
+
+    .alert {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .filter-section {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .searchable-dropdown {
+      position: relative;
+    }
+
+    .searchable-dropdown input {
+      width: 100%;
+      padding: 0.85rem;
+      border: 1.5px solid #e9ecef;
+      border-radius: 10px;
+      background-color: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .searchable-dropdown input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .dropdown-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .dropdown-result {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f1f1;
+      transition: background-color 0.2s;
+    }
+
+    .dropdown-result:hover {
+      background-color: rgba(165, 214, 167, 0.2);
+    }
+
+    .dropdown-result:last-child {
+      border-bottom: none;
+    }
+
+    .no-results {
+      padding: 0.75rem 1rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* Product Selection Side Panel */
+    .products-container {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .order-products-section {
+      flex: 1;
+    }
+
+    .product-selection-panel {
+      width: 45%;
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .product-panel-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      padding: 1.2rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+    }
+
+    .product-panel-body {
+      padding: 1.5rem;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .product-item-card {
+      border: 1px solid rgba(165, 214, 167, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .product-item-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
+    }
+
+    .product-info {
+      margin-bottom: 0.75rem;
+    }
+
+    .product-name {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .product-details {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .product-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .quantity-input {
+      width: 70px;
+      text-align: center;
+    }
+
+    .stock-info {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-top: 0.25rem;
+    }
+
+    .out-of-stock {
+      color: #dc3545;
+      font-weight: 600;
+    }
+
+    .form-control:disabled {
+      background-color: #f8f9fa;
+      opacity: 1;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 1200px) {
+      .products-container {
+        flex-direction: column;
+      }
+      
+      .product-selection-panel {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .form-card {
+        padding: 1.5rem;
+      }
+
+      .table-responsive {
+        font-size: 0.9rem;
+      }
+
+      .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+
+      .product-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .quantity-control {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+    .form-select option:disabled {
+        color: #6c757d;
+        font-style: italic;
+        background-color: #e9ecef;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-design">
+    <div class="grid-pattern"></div>
+    <div class="shape-1"></div>
+    <div class="shape-2"></div>
+    <div class="shape-3"></div>
+    <div class="line-1"></div>
+    <div class="line-2"></div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand fw-bold" href="#">Casador Agri</a>
+    <div class="ms-auto dropdown">
+      <a href="#" class="profile-dropdown text-decoration-none dropdown-toggle d-flex align-items-center" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-user-circle fa-lg me-2 profile-icon"></i> Secretary
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
+        <li><a class="dropdown-item" href="{{ url_for('secretary_dashboard') }}"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+            <i class="fas fa-sign-out-alt me-2"></i>Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show mb-4" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="page-header">
+      <h2 class="text-success mb-0">Create Order</h2>
+      <a href="{{ url_for('secretary_dashboard') }}" class="btn btn-outline-success">
+        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+      </a>
+    </div>
+
+    <!-- ✅ Regular form submission -->
+    <form method="POST" action="{{ url_for('create_order') }}" id="orderForm">
+      <div class="form-card">
+        <h4 class="text-success mb-4"><i class="fas fa-user me-2"></i>Customer Information</h4>
+        
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Customer Name</label>
+            <div class="searchable-dropdown">
+              <input type="text" id="customerSearch" placeholder="Type to search customers..." autocomplete="off">
+              <input type="hidden" name="customer_name" id="selectedCustomer" required>
+              <div class="dropdown-results" id="customerResults">
+                {% for customer in customers %}
+                  <div class="dropdown-result" data-value="{{ customer.customer_name }}" data-address="{{ customer.address }}">
+                    {{ customer.customer_name }}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Assigned Driver</label>
+            <select name="assigned_driver" class="form-select" required>
+              <option value="">Select Driver</option>
+              {% for driver in drivers %}
+                <option value="{{ driver.user_id }}">{{ driver.full_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Address</label>
+            <textarea name="address" id="customerAddress" class="form-control" rows="3" required></textarea>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Created At</label>
+            <input type="datetime-local" name="created_at" id="createdAt" class="form-control" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Section - Side by side layout -->
+      <div class="products-container">
+        <!-- Order Products Table -->
+        <div class="order-products-section">
+          <div class="table-card">
+            <div class="table-card-header">
+              <span><i class="fas fa-boxes me-2"></i>Order Products</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover mb-0" id="orderProductsTable">
+                <thead class="table-success">
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Kilos</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Selection Panel -->
+        <div class="product-selection-panel">
+          <div class="product-panel-header">
+            <span><i class="fas fa-list me-2"></i>Available Products</span>
+          </div>
+          <div class="product-panel-body">
+            <!-- Category Filter Section -->
+            <div class="filter-section mb-4">
+              <div class="row align-items-center">
+                <div class="col-md-12">
+                  <label class="form-label text-dark fw-bold">Filter by Category</label>
+                  <select id="categoryFilter" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                      <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Product List -->
+            <div id="productList">
+              {% for category, products in products_by_category.items() %}
+              <div class="product-category mb-4">
+                  <h5 class="text-success mb-3">{{ category }}</h5>
+                  {% for product in products %}
+                  <div class="product-item mb-3 p-3 border rounded">
+                      <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                              <h6 class="mb-1">{{ product.product_name }}</h6>
+                              <p class="mb-1 text-muted">Price: ₱{{ product.price }} | Per Unit: {{ product.kilo_per_unit }}kg</p>
+                              <p class="mb-0 text-success">Available Stock: {{ product.current_stock }}</p>
+                          </div>
+                          <div>
+                              <button type="button" 
+                                      class="btn btn-success-light add-product" 
+                                      data-product-id="{{ product.product_id }}"
+                                      data-product-name="{{ product.product_name }}"
+                                      data-price="{{ product.price }}"
+                                      data-stock="{{ product.current_stock }}"
+                                      data-kilo="{{ product.kilo_per_unit }}">
+                                  <i class="fas fa-plus"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  {% endfor %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Price Card -->
+      <div class="total-price-card">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="mb-0">Total: ₱<span id="totalPrice">0.00</span></h3>
+            <input type="hidden" name="total_price" id="total_price_input" required>
+            <input type="hidden" name="order_items" id="order_items_input" required>
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-success-light btn-lg">
+              <i class="fas fa-paper-plane me-2"></i>Submit Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form method="POST" action="{{ url_for('logout') }}">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="logoutModalLabel"><i class="fas fa-sign-out-alt me-2"></i>Confirm Logout</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to log out of your secretary account?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Logout</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p class="mb-0">&copy; {{ current_year }} Casador Agri Business Suite</p>
+  </footer>
+
+<script>
+$(document).ready(function() {
+  console.log("🟢 Page loaded");
+
+  // Set current date/time
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = String(now.getMonth() + 1).padStart(2, '0');
+  var day = String(now.getDate()).padStart(2, '0');
+  var hours = String(now.getHours()).padStart(2, '0');
+  var minutes = String(now.getMinutes()).padStart(2, '0');
+  var formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+  $('#createdAt').val(formattedDateTime);
+
+  // Customer search dropdown
+  var $customerSearch = $('#customerSearch');
+  var $customerResults = $('#customerResults');
+  var $selectedCustomer = $('#selectedCustomer');
+  var $customerAddress = $('#customerAddress');
+
+  $customerSearch.on('input', function() {
+    var searchTerm = $(this).val().toLowerCase().trim();
+    
+    if (searchTerm.length === 0) {
+      $('.dropdown-result').show();
+      $customerResults.show();
+      return;
+    }
+
+    var hasResults = false;
+    $('.dropdown-result').each(function() {
+      var customerName = $(this).data('value').toLowerCase();
+      if (customerName.includes(searchTerm)) {
+        $(this).show();
+        hasResults = true;
+      } else {
+        $(this).hide();
+      }
+    });
+
+    if (hasResults) {
+      $customerResults.show();
+    } else {
+      $customerResults.html('<div class="no-results">No customers found</div>').show();
+    }
+  });
+
+  $(document).on('click', '.dropdown-result', function() {
+    var customerName = $(this).data('value');
+    var customerAddress = $(this).data('address');
+    
+    $customerSearch.val(customerName);
+    $selectedCustomer.val(customerName);
+    $customerAddress.val(customerAddress);
+    $customerResults.hide();
+  });
+
+  $(document).on('click', function(e) {
+    if (!$(e.target).closest('.searchable-dropdown').length) {
+      $customerResults.hide();
+    }
+  });
+
+  // Category filter
+  $('#categoryFilter').on('change', function() {
+    var selectedCategory = $(this).val().toLowerCase();
+    
+    if (selectedCategory === '') {
+      $('.product-category').show();
+    } else {
+      $('.product-category').each(function() {
+        var categoryName = $(this).find('h5').text().toLowerCase();
+        if (categoryName === selectedCategory) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    }
+  });
+
+  // Initialize original stock values
+  $('.add-product').each(function() {
+    var originalStock = $(this).data('stock');
+    $(this).attr('data-original-stock', originalStock);
+  });
+
+  // Add product to order
+  $(document).on("click", ".add-product", function () {
+    var productId = $(this).data("product-id");
+    var productName = $(this).data("product-name");
+    var price = parseFloat($(this).data("price"));
+    var stock = parseInt($(this).data("stock"));
+    var kilos = parseFloat($(this).data("kilo"));
+    var qty = 1;
+    var button = $(this);
+
+    // Check if product already exists in order
+    var existingRow = $(`#orderProductsTable tbody tr[data-id="${productId}"]`);
+    if (existingRow.length > 0) {
+      var existingQtyInput = existingRow.find(".qty-input");
+      var existingQty = parseInt(existingQtyInput.val()) || 0;
+      var newQty = existingQty + qty;
+
+      if (newQty > stock + existingQty) {
+        alert("Cannot add more than available stock!");
+        return;
+      }
+
+      existingQtyInput.val(newQty);
+      existingQtyInput.attr("data-old-qty", newQty);
+    } else {
+      if (qty > stock) {
+        alert("Cannot add more than available stock!");
+        return;
+      }
+
+      var totalKilos = (kilos * qty).toFixed(2);
+      var newRow = `
+        <tr data-id="${productId}">
+          <td>${productName}</td>
+          <td>
+            <input type="number" 
+                   class="form-control qty-input" 
+                   value="${qty}" 
+                   min="1" 
+                   max="${stock}" 
+                   data-price="${price}" 
+                   data-kilo="${kilos}"
+                   data-product-id="${productId}"
+                   data-old-qty="${qty}">
+          </td>
+          <td class="kilos-display">${totalKilos}</td>
+          <td>₱${(price * qty).toFixed(2)}</td>
+          <td>
+            <button type="button" 
+                    class="btn btn-danger btn-sm remove-product" 
+                    data-product-id="${productId}">
+              <i class="fas fa-times"></i>
+            </button>
+          </td>
+        </tr>
+      `;
+      $("#orderProductsTable tbody").append(newRow);
+    }
+
+    // Update displayed stock
+    var newStock = stock - 1;
+    button.data("stock", newStock);
+    
+    var stockDisplay = button.closest('.product-item').find('.text-success, .out-of-stock');
+    stockDisplay.removeClass('out-of-stock').addClass('text-success')
+                .text('Available Stock: ' + newStock);
+    
+    if (newStock <= 0) {
+      button.prop('disabled', true);
+      button.html('<i class="fas fa-ban"></i>');
+      stockDisplay.removeClass('text-success').addClass('out-of-stock').text('Out of Stock');
+    }
+
+    updateTotal();
+  });
+
+  // Remove product from order
+  $(document).on("click", ".remove-product", function () {
+    var productId = $(this).data("product-id");
+    var qtyInput = $(this).closest("tr").find(".qty-input");
+    var removedQty = parseInt(qtyInput.val()) || 0;
+    
+    // Restore stock
+    var addButton = $(`.add-product[data-product-id="${productId}"]`);
+    var currentStock = parseInt(addButton.data("stock"));
+    var newStock = currentStock + removedQty;
+    
+    addButton.data("stock", newStock);
+    
+    var stockDisplay = addButton.closest('.product-item').find('.text-success, .out-of-stock');
+    stockDisplay.removeClass('out-of-stock').addClass('text-success')
+                .text('Available Stock: ' + newStock);
+    
+    addButton.prop('disabled', false);
+    addButton.html('<i class="fas fa-plus"></i>');
+    
+    $(this).closest("tr").remove();
+    updateTotal();
+  });
+
+  // Update quantity input
+  $(document).on("input", ".qty-input", function () {
+    var qty = parseInt($(this).val()) || 0;
+    var productId = $(this).data("product-id");
+    var oldQty = parseInt($(this).attr("data-old-qty")) || 0;
+    var price = parseFloat($(this).data("price"));
+    var kilos = parseFloat($(this).data("kilo"));
+    
+    var addButton = $(`.add-product[data-product-id="${productId}"]`);
+    var originalStock = parseInt(addButton.attr("data-original-stock"));
+    var currentDisplayStock = parseInt(addButton.data("stock"));
+    
+    var qtyDiff = qty - oldQty;
+    var newDisplayStock = currentDisplayStock - qtyDiff;
+    
+    if (newDisplayStock < 0) {
+      alert("Cannot add more than available stock!");
+      $(this).val(oldQty);
+      return;
+    }
+    
+    // Update stock display
+    addButton.data("stock", newDisplayStock);
+    var stockDisplay = addButton.closest('.product-item').find('.text-success, .out-of-stock');
+    
+    if (newDisplayStock <= 0) {
+      stockDisplay.removeClass('text-success').addClass('out-of-stock').text('Out of Stock');
+      addButton.prop('disabled', true);
+      addButton.html('<i class="fas fa-ban"></i>');
+    } else {
+      stockDisplay.removeClass('out-of-stock').addClass('text-success')
+                  .text('Available Stock: ' + newDisplayStock);
+      addButton.prop('disabled', false);
+      addButton.html('<i class="fas fa-plus"></i>');
+    }
+    
+    $(this).attr("data-old-qty", qty);
+    
+    // Update kilos display
+    var totalKilos = (kilos * qty).toFixed(2);
+    $(this).closest('tr').find('.kilos-display').text(totalKilos);
+    
+    // Update price display
+    var totalPrice = (price * qty).toFixed(2);
+    $(this).closest('tr').find('td:nth-child(4)').text('₱' + totalPrice);
+    
+    updateTotal();
+  });
+
+  // Update total price
+  function updateTotal() {
+    var total = 0;
+    $(".qty-input").each(function () {
+      var qty = parseInt($(this).val()) || 0;
+      var price = parseFloat($(this).data("price")) || 0;
+      total += qty * price;
+    });
+    $("#totalPrice").text(total.toFixed(2));
+    $("#total_price_input").val(total.toFixed(2));
+  }
+
+  // ✅ CRITICAL FIX: Form submission
+  $("#orderForm").on("submit", function(e) {
+    console.log("🔵 Form submit triggered");
+
+    // Validate customer selection
+    if (!$selectedCustomer.val()) {
+      e.preventDefault();
+      alert("Please select a customer!");
+      return false;
+    }
+
+    // Validate order items
+    if ($("#orderProductsTable tbody tr").length === 0) {
+      e.preventDefault();
+      alert("Please add at least one product to the order!");
+      return false;
+    }
+
+    // Build order items array
+    var orderItems = [];
+    $("#orderProductsTable tbody tr").each(function () {
+      var productId = $(this).data("id");
+      var quantity = $(this).find(".qty-input").val();
+      orderItems.push({ product_id: productId, quantity: quantity });
+    });
+
+    console.log("📦 Order Items:", orderItems);
+
+    // Set hidden input value
+    $("#order_items_input").val(JSON.stringify(orderItems));
+
+    console.log("✅ Form data ready:");
+    console.log("  Customer:", $selectedCustomer.val());
+    console.log("  Driver:", $('select[name="assigned_driver"]').val());
+    console.log("  Total:", $("#total_price_input").val());
+    console.log("  Items:", $("#order_items_input").val());
+
+    // Let form submit naturally
+    return true;
+  });
+});
+</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

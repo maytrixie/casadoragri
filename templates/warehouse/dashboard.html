@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Warehouse Dashboard - Casador Agri</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #2E7D32;      /* 10% - Deep Forest Green */
+      --secondary: #A5D6A7;    /* 30% - Soft Green */
+      --light-bg: #FAFAFA;     /* 60% - Off-white background */
+      --white: #FFFFFF;        /* Pure white for containers */
+      --text-dark: #212529;    /* Text color */
+      --text-light: #6C757D;   /* Secondary text */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--text-dark);
+      background-color: var(--light-bg); /* 60% Off-white */
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Professional Background Elements */
+    .background-design {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    /* Subtle grid pattern */
+    .grid-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+          linear-gradient(rgba(46, 125, 50, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(46, 125, 50, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.4;
+    }
+
+    /* Geometric shapes */
+    .shape-1 {
+      position: absolute;
+      top: 10%;
+      right: 5%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .shape-2 {
+      position: absolute;
+      bottom: 15%;
+      left: 5%;
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.08) 0%, rgba(46, 125, 50, 0.03) 100%);
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      animation: float 12s ease-in-out infinite reverse;
+    }
+
+    .shape-3 {
+      position: absolute;
+      top: 60%;
+      right: 15%;
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.06) 0%, rgba(46, 125, 50, 0.02) 100%);
+      border-radius: 50% 20% 70% 40% / 60% 70% 30% 40%;
+      animation: float 10s ease-in-out infinite;
+    }
+
+    /* Subtle lines */
+    .line-1 {
+      position: absolute;
+      top: 20%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.1) 20%, rgba(46, 125, 50, 0.1) 80%, transparent 100%);
+    }
+
+    .line-2 {
+      position: absolute;
+      bottom: 30%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.08) 30%, rgba(46, 125, 50, 0.08) 70%, transparent 100%);
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+    }
+
+    /* Sidebar Styling - 30% Soft Green */
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+      color: var(--text-dark);
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding: 2rem 0;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      text-align: center;
+      padding: 0 2rem 2rem;
+      border-bottom: 1px solid rgba(46, 125, 50, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .logo-container {
+      background: linear-gradient(135deg, var(--white) 0%, var(--light-bg) 100%);
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 1rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .sidebar-logo h3 {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin: 0;
+      color: var(--primary); /* 10% Deep Forest Green */
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 1rem 2rem;
+      color: var(--text-dark);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar-menu a:hover,
+    .sidebar-menu a.active {
+      background: rgba(46, 125, 50, 0.1); /* 10% Deep Forest Green with opacity */
+      border-left-color: var(--primary); /* 10% Deep Forest Green */
+      padding-left: 2.5rem;
+      color: var(--primary);
+    }
+
+    .sidebar-menu i {
+      margin-right: 1rem;
+      width: 20px;
+      text-align: center;
+      color: var(--primary); /* 10% Deep Forest Green */
+    }
+
+    /* Main Content Area - 60% Off-white */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--light-bg); /* 60% Off-white */
+    }
+
+    /* Navbar Styling - 30% Soft Green */
+    .navbar {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;
+      color: var(--text-dark);
+    }
+
+    .navbar-brand {
+      color: var(--text-dark) !important;
+      font-weight: 700;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      color: var(--text-dark);
+    }
+
+    /* Dashboard Content - 60% Off-white */
+    .dashboard-section {
+      flex: 1;
+      padding: 2rem 3rem;
+      background-color: var(--light-bg); /* 60% Off-white */
+      overflow-y: auto;
+    }
+
+    /* Card Styling - Equal Height and Width */
+    .stats-card {
+      background: linear-gradient(135deg, var(--white) 0%, var(--light-bg) 100%);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      text-align: center;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(255,255,255,0.8);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 280px;
+    }
+
+    .stats-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%); /* 10% + 30% */
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .stats-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+    }
+
+    .stats-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    /* Special styling for Add Product card */
+    .add-product-card {
+      background: linear-gradient(135deg, #FFE082 0%, #FFD54F 100%);
+      border: 2px solid #FFC107;
+      animation: pulse 2s infinite;
+      position: relative;
+    }
+
+    .add-product-card::after {
+      content: '➕';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.2rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 6px 25px rgba(255, 193, 7, 0.3); }
+      50% { box-shadow: 0 6px 35px rgba(255, 193, 7, 0.6); }
+      100% { box-shadow: 0 6px 25px rgba(255, 193, 7, 0.3); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .stats-card h5 {
+      color: var(--primary); /* 10% Deep Forest Green */
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      font-size: 1.15rem;
+      letter-spacing: 0.3px;
+      line-height: 1.3;
+      min-height: 2.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .add-product-card h5 {
+      color: #E65100 !important; /* Dark orange for better contrast */
+    }
+
+    .stats-card .number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--primary); /* 10% Deep Forest Green */
+      margin: 1rem 0;
+      line-height: 1;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .add-product-card .number {
+      color: #E65100 !important;
+    }
+
+    .stats-card .number i {
+      font-size: 2.8rem;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .stats-card .label {
+      color: var(--text-light);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+      min-height: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .add-product-card .label {
+      color: #E65100 !important;
+      font-weight: 600;
+    }
+
+    /* Badge Styling */
+    .badge {
+      font-size: 0.85rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+    }
+
+    /* Table Styling */
+    .table-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .table-card-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      padding: 1.2rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+    }
+
+    .table th {
+      background-color: var(--primary);
+      color: white;
+      font-weight: 600;
+      padding: 1rem;
+    }
+
+    .table td {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(165, 214, 167, 0.1);
+    }
+
+    /* Button Styling */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* 10% Deep Forest Green */
+      border: none;
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.4s ease;
+      box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1B5E20 0%, var(--primary) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(46, 125, 50, 0.4);
+      color: white;
+    }
+
+    .btn-outline-light {
+      border: 2px solid white;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.4s ease;
+    }
+
+    .btn-outline-light:hover {
+      background: white;
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    /* Form Styling */
+    .form-control, .form-select {
+      border: 1.5px solid #e9ecef;
+      padding: 0.85rem;
+      border-radius: 10px;
+      transition: all 0.3s;
+      background-color: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary); /* 10% Deep Forest Green */
+      box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+      transform: translateY(-1px);
+    }
+
+    /* Footer - 30% Soft Green */
+    .footer {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+      color: var(--text-dark);
+      padding: 1.2rem 0;
+      text-align: center;
+      margin-top: auto;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    }
+
+    .footer p {
+      margin: 0;
+      opacity: 0.9;
+      letter-spacing: 0.3px;
+      font-weight: 600;
+    }
+
+    /* Profile Styling - Deep Forest Green */
+    .profile-dropdown {
+      color: var(--primary) !important; /* Deep Forest Green */
+      font-weight: 600;
+    }
+
+    .profile-dropdown:hover {
+      color: #1B5E20 !important; /* Darker shade for hover */
+    }
+
+    .profile-icon {
+      color: var(--primary) !important; /* Deep Forest Green */
+    }
+
+    /* Menu toggle button color */
+    .menu-toggle {
+      color: var(--text-dark) !important;
+    }
+
+    .menu-toggle:hover {
+      color: var(--primary) !important;
+    }
+
+    /* Modal Styling */
+    .modal-content {
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+      border: none;
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      border-radius: 16px 16px 0 0;
+      padding: 1.5rem;
+    }
+
+    .modal-title {
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-footer {
+      border-radius: 0 0 16px 16px;
+      padding: 1.5rem;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    /* Form label styling for modals */
+    .modal-body .form-label {
+      color: var(--text-dark);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Animal modal background icons */
+    .animal-modal-bg {
+      position: absolute;
+      z-index: 0;
+      opacity: 0.13;
+      pointer-events: none;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    /* Ensure form elements are above animal icons */
+    .modal-body .form-control,
+    .modal-body .form-select {
+      position: relative;
+      z-index: 1;
+      background-color: rgba(255,255,255,0.9);
+    }
+
+    .modal-body .form-control:focus,
+    .modal-body .form-select:focus {
+      background-color: white;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+      transform: translateY(-1px);
+    }
+
+    /* Balanced Filter and Download Section */
+    .filter-download-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      padding: 0 1rem;
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .download-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* Balanced form controls */
+    .balanced-form-control {
+      padding: 0.6rem 0.8rem;
+      font-size: 0.9rem;
+      height: auto;
+    }
+
+    .balanced-btn {
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    /* Equal Card Sizing - FIXED */
+    .equal-cards-row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .equal-cards-row .col-12 {
+      display: flex;
+    }
+    
+    .equal-height-card {
+      height: 100%;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* Card content alignment fix */
+    .stats-card-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      flex: 1;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .dashboard-section {
+        padding: 1.5rem;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .stats-card {
+        min-height: 250px;
+        padding: 2rem 1rem;
+      }
+
+      .stats-card .number {
+        font-size: 2.1rem;
+      }
+
+      .stats-card .number i {
+        font-size: 2.4rem;
+        width: 50px;
+        height: 50px;
+      }
+
+      .filter-download-section {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-controls, .download-controls {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-section {
+        padding: 1rem;
+      }
+
+      .stats-card {
+        padding: 1.8rem 1rem;
+        min-height: 220px;
+      }
+
+      .stats-card h5 {
+        font-size: 1.1rem;
+        min-height: 2.4rem;
+      }
+
+      .stats-card .number {
+        font-size: 1.9rem;
+        min-height: 2.4rem;
+      }
+
+      .stats-card .number i {
+        font-size: 2.1rem;
+        width: 45px;
+        height: 45px;
+      }
+
+      .stats-card .label {
+        font-size: 0.8rem;
+        min-height: 2rem;
+      }
+
+      .filter-controls {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .filter-controls .form-control {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .filter-download-section {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .filter-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .stats-card {
+        min-height: 200px;
+      }
+    }
+
+    /* Menu Toggle Button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 992px) {
+      .menu-toggle {
+        display: block;
+      }
+    }
+    /* Empty State Styling */
+      .table tbody td .fa-inbox {
+        opacity: 0.3;
+      }
+
+      .table tbody td h5 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .table tbody td p {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+      }
+  </style>
+</head>
+<body>
+  <!-- Professional Background Design -->
+  <div class="background-design">
+    <div class="grid-pattern"></div>
+    <div class="shape-1"></div>
+    <div class="shape-2"></div>
+    <div class="shape-3"></div>
+    <div class="line-1"></div>
+    <div class="line-2"></div>
+  </div>
+
+  <!-- Sidebar - 30% Soft Green -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-container">
+        <img src="{{ url_for('static', filename='img/casadorr.png') }}" alt="Logo" style="width: 60px;">
+      </div>
+      <h3>Casador Agri</h3>
+    </div>
+    
+    <ul class="sidebar-menu">
+      <li><a href="{{ url_for('warehouse_dashboard') }}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="{{ url_for('warehouse_inventory') }}"><i class="fas fa-warehouse"></i> Manage Inventory</a></li>
+      <li><a href="{{ url_for('restock_alerts') }}"><i class="fas fa-exclamation-circle"></i> Restock Alerts</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content - 60% Off-white -->
+  <div class="main-content">
+    <!-- Navbar - 30% Soft Green -->
+    <nav class="navbar navbar-expand-lg">
+      <button class="menu-toggle me-3">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a class="navbar-brand fw-bold" href="#">Warehouse Dashboard</a>
+      <div class="ms-auto dropdown">
+        <a href="#" class="profile-dropdown text-decoration-none dropdown-toggle d-flex align-items-center" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user-circle fa-lg me-2 profile-icon"></i> Warehouse Staff
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
+          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editAccountModal"><i class="fas fa-edit me-2"></i>Edit Account</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+              <i class="fas fa-sign-out-alt me-2"></i>Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Dashboard Content - 60% Off-white -->
+    <div class="dashboard-section">
+      <div class="welcome-text text-center mb-5">
+        <h2 class="text-success">Welcome, Warehouse Staff!</h2>
+        <p class="text-muted">Manage inventory and monitor stock levels efficiently</p>
+      </div>
+
+      <!-- Stats Cards Row - Equal Height and Width -->
+      <div class="row g-4 mb-5 equal-cards-row">
+        <!-- Manage Inventory Card -->
+        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch">
+          <div class="stats-card equal-height-card" data-url="{{ url_for('warehouse_inventory') }}">
+            <div class="stats-card-content">
+              <h5><i class="fas fa-warehouse me-2"></i>Manage Inventory</h5>
+              <div class="number"><i class="fas fa-boxes"></i></div>
+              <div class="label">Log daily in/out stock</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products to Restock Card -->
+        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch">
+          <div class="stats-card equal-height-card" data-url="{{ url_for('restock_alerts') }}">
+            <div class="stats-card-content">
+              <h5>
+                <i class="fas fa-exclamation-circle me-2"></i>Products to Restock
+              </h5>
+              <div class="number">{{ restock_count }}</div>
+              <div class="label">Items low in stock</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Product Card - Special Styling -->
+        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch">
+          <div class="stats-card add-product-card equal-height-card" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            <div class="stats-card-content">
+              <h5><i class="fas fa-plus-circle me-2"></i>Add Product</h5>
+              <div class="number"><i class="fas fa-cube"></i></div>
+              <div class="label">Click to register new items</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory Logs Table -->
+      <div class="table-card">
+        <div class="table-card-header d-flex justify-content-between align-items-center">
+          <span><i class="fas fa-clipboard-list me-2"></i>Inventory Logs</span>
+        </div>
+        <div class="card-body">
+          <!-- Combined Filter and Download Section - Properly Positioned -->
+          <div class="filter-download-section">
+            <div class="filter-controls">
+              <!-- Search and Filter -->
+              <form method="GET" class="d-flex align-items-center gap-2">
+                <input type="text" name="search" class="form-control balanced-form-control" placeholder="Search product..." value="{{ search_query }}" style="width: 200px;">
+                <select name="category" class="form-select balanced-form-control" style="width: 170px;">
+                  <option value="">All Categories</option>
+                  <option value="Cattle Line" {% if category_filter == 'Cattle Line' %}selected{% endif %}>Cattle Line</option>
+                  <option value="Hog Line" {% if category_filter == 'Hog Line' %}selected{% endif %}>Hog Line</option>
+                  <option value="Chicken/Game Fowl Line" {% if category_filter == 'Chicken/Game Fowl Line' %}selected{% endif %}>Chicken/Game Fowl Line</option>
+                  <option value="Corn Product" {% if category_filter == 'Corn Product' %}selected{% endif %}>Corn Product</option>
+                  <option value="Raw Materials" {% if category_filter == 'Raw Materials' %}selected{% endif %}>Raw Materials</option>
+                  <option value="Other Product" {% if category_filter == 'Other Product' %}selected{% endif %}>Other Product</option>
+                  <option value="Fighting Cock Line" {% if category_filter == 'Fighting Cock Line' %}selected{% endif %}>Fighting Cock Line</option>
+                </select>
+                <button type="submit" class="btn btn-primary balanced-btn">Filter</button>
+                <a href="{{ url_for('warehouse_dashboard') }}" class="btn btn-outline-secondary balanced-btn">Reset</a>
+              </form>
+            </div>
+            
+            <div class="download-controls">
+              <!-- Download Dropdown -->
+              <div class="dropdown">
+                <button class="btn btn-outline-primary balanced-btn dropdown-toggle" type="button" id="downloadDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-download me-1"></i>Download Reports
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="downloadDropdown">
+                  <li><a class="dropdown-item" href="#" id="downloadCsvBtn">
+                    <i class="fas fa-file-csv me-2"></i>Download CSV
+                  </a></li>
+                  <li><a class="dropdown-item" href="#" id="downloadPdfBtn">
+                    <i class="fas fa-file-pdf me-2"></i>Download PDF
+                  </a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+      <!-- Table -->
+<div class="table-responsive">
+  <table id="inventoryLogsTable" class="table table-bordered table-striped table-hover align-middle">
+    <thead class="table-success">
+      <tr>
+        <th>Product Name</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>AM</th>
+        <th>PM</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if logs and logs|length > 0 %}
+        {% for log in logs %}
+        <tr>
+          <td>{{ log.product_name }}</td>
+          <td>{{ log.category }}</td>
+          <td>{{ log.log_date }}</td>
+          <td>{{ log.am }}</td>
+          <td>{{ log.pm }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="5" class="text-center py-5">
+            <div class="d-flex flex-column align-items-center" style="padding: 40px 0;">
+              <i class="fas fa-inbox fa-3x text-muted mb-3" style="opacity: 0.3;"></i>
+              <h5 class="text-muted" style="font-weight: 600; margin-bottom: 0.5rem;">No Data for {{ category_filter if category_filter else 'Selected Category' }}</h5>
+              <p class="text-muted" style="font-size: 0.9rem;">No inventory logs found for the selected category.</p>
+              <a href="{{ url_for('warehouse_dashboard') }}" class="btn btn-outline-primary mt-2">
+                <i class="fas fa-list me-2"></i>View All Categories
+              </a>
+            </div>
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+        </div> <!-- CLOSING card-body -->
+      </div> <!-- CLOSING table-card -->
+    </div> <!-- CLOSING dashboard-section -->
+
+    <!-- Footer - 30% Soft Green -->
+    <footer class="footer">
+      <p class="mb-0">&copy; {{ current_year }} Casador Agri Business Suite</p>
+    </footer>
+  </div> <!-- CLOSING main-content -->
+
+  <!-- Modals -->
+  <!-- Edit Account Modal -->
+  <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editAccountModalLabel">Edit Account</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form method="POST" action="{{ url_for('update_warehouse_account') }}">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="email" class="form-label">New Email</label>
+              <input type="email" class="form-control" id="email" name="email" required value="{{ session['email'] }}">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">New Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProductModalLabel"><i class="fas fa-plus-circle me-2"></i>Add New Product</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form method="POST" action="{{ url_for('add_product') }}">
+          <div class="modal-body position-relative" style="background: linear-gradient(135deg, #E8F5E9 0%, #FFFDE4 60%, #A5D6A7 100%);">
+            <!-- Animal icons scattered in the modal background -->
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f437.svg"
+                 class="animal-modal-bg" style="left:18px; top:60px; width:38px;" alt="Pig">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f404.svg"
+                 class="animal-modal-bg" style="right:22px; top:120px; width:44px;" alt="Cow">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f414.svg"
+                 class="animal-modal-bg" style="left:40px; bottom:40px; width:32px;" alt="Chicken">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f436.svg"
+                 class="animal-modal-bg" style="right:30px; bottom:30px; width:36px;" alt="Dog">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f431.svg"
+                 class="animal-modal-bg" style="left:50%; bottom:18px; transform:translateX(-50%); width:34px;" alt="Cat">
+
+            <!-- Form fields -->
+            <div class="mb-3">
+              <label class="form-label fw-bold text-dark">Category</label>
+              <select name="category" class="form-select" required>
+                <option value="">Select Category</option>
+                <option value="Cattle Line">Cattle Line</option>
+                <option value="Hog Line">Hog Line</option>
+                <option value="Chicken/Game Fowl Line">Chicken/Game Fowl Line</option>
+                <option value="Corn Product">Corn Product</option>
+                <option value="Raw Materials">Raw Materials</option>
+                <option value="Other Product">Other Product</option>
+                <option value="Fighting Cock Line">Fighting Cock Line</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold text-dark">Product Name</label>
+              <input type="text" name="product_name" class="form-control" required 
+                     placeholder="Enter product name">
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-dark">Price (₱)</label>
+                  <input type="number" name="price" step="0.01" class="form-control" required 
+                         placeholder="0.00">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-dark">Kilo per Unit</label>
+                  <input type="number" name="kilo_per_unit" step="0.01" class="form-control" required 
+                         placeholder="0.00">
+                </div>
+              </div>
+            </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold text-dark">Expiry Duration</label>
+                <select name="expiry_months" class="form-select">
+                  <option value="">No Expiry</option>
+                  <option value="1">1 Month</option>
+                  <option value="2">2 Months</option>
+                  <option value="3">3 Months</option>
+                  <option value="4">4 Months</option>
+                  <option value="5">5 Months</option>
+                  <option value="6">6 Months</option>
+                  <option value="12">1 Year</option>
+                </select>
+              </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold text-dark">Reorder Level</label>
+              <input type="number" name="reorder_level" class="form-control" 
+                     placeholder="Set low stock alert level">
+            </div>
+          </div>
+          <div class="modal-footer" style="background: linear-gradient(135deg, #A5D6A7 0%, #C8E6C9 100%);">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-plus me-2"></i>Add Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="logoutModalLabel"><i class="fas fa-sign-out-alt me-2"></i>Confirm Logout</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form method="POST" action="{{ url_for('logout') }}">
+          <div class="modal-body">
+            Are you sure you want to log out of your warehouse account?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Logout</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile menu toggle
+      var menuToggle = document.querySelector('.menu-toggle');
+      var sidebar = document.querySelector('.sidebar');
+
+      if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', function() {
+          sidebar.classList.toggle('active');
+        });
+      }
+
+      // Stats card click handlers
+      document.querySelectorAll('.stats-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          var url = this.getAttribute('data-url');
+          if (url) {
+            window.location.href = url;
+          }
+        });
+      });
+
+      // CSV Download
+      document.getElementById('downloadCsvBtn').addEventListener('click', function () {
+        const table = document.getElementById('inventoryLogsTable');
+        let csv = [];
+        for (let row of table.rows) {
+          let rowData = [];
+          for (let cell of row.cells) {
+            rowData.push('"' + cell.innerText.replace(/"/g, '""') + '"');
+          }
+          csv.push(rowData.join(','));
+        }
+        const csvContent = csv.join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'inventory_logs.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      // PDF Download
+      document.getElementById('downloadPdfBtn').addEventListener('click', function () {
+        const element = document.getElementById('inventoryLogsTable');
+        html2pdf().set({
+          margin: 0.5,
+          filename: 'inventory_logs.pdf',
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+        }).from(element).save();
+      });
+    });
+  </script>
+</body>
+</html>
